@@ -5,12 +5,20 @@
  */
 package presentationtier;
 
+import Library.ClientObj;
+import Library.Transmission;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author eliasc
  */
 public class LoginFrame extends javax.swing.JInternalFrame {
-   
+    ClientObj clientObj = new ClientObj();
+    Transmission transmission = new Transmission();  
     /**
      * Creates new form LoginFrame
      */
@@ -87,14 +95,35 @@ public class LoginFrame extends javax.swing.JInternalFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
         
-        String email = txtEmail.getText();
-        char passwordChar[] = txtPassword.getPassword();
-        String password = "";
-        for(char passChar: passwordChar){
-            password += passChar;
+                
+        try{
+            Socket socket = new Socket("localhost",8001);
+            String email = txtEmail.getText();
+            char passwordChar[] = txtPassword.getPassword();
+            String password = "";
+            for(char passChar: passwordChar){
+                password += passChar;
+            }
+
+            clientObj.setEmail(email);
+            clientObj.setPassword(password);
+
+            transmission.setDecision("login");
+            transmission.setObject(clientObj);
+            
+            ObjectOutputStream writeToServer = new ObjectOutputStream(socket.getOutputStream());
+            writeToServer.writeObject(transmission);
+            
+            ObjectInputStream readFromServer = new ObjectInputStream(socket.getInputStream());            
+            transmission = (Transmission) readFromServer.readObject();
+            
+            JOptionPane.showMessageDialog(null, transmission.getDecision());
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
         
-        Client.jMenuTeacherPortal.setEnabled(true);
+        //Client.jMenuTeacherPortal.setEnabled(true);
     }//GEN-LAST:event_btnLoginActionPerformed
 
 
