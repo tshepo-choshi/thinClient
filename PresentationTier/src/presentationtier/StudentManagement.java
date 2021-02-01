@@ -5,12 +5,20 @@
  */
 package presentationtier;
 
+import Library.ClientObj;
+import Library.Transmission;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author eliasc
  */
 public class StudentManagement extends javax.swing.JInternalFrame {
-
+    ClientObj clientObj = new ClientObj();
+    Transmission transmission = new Transmission(); 
     /**
      * Creates new form StudentManagement
      */
@@ -91,43 +99,40 @@ public class StudentManagement extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(97, 97, 97)
                         .addComponent(btnDelete)
                         .addGap(18, 18, 18)
                         .addComponent(btnUpdate)
                         .addGap(34, 34, 34))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnAdd)
-                                .addGap(185, 185, 185))
-                            .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnAdd)
+                        .addGap(185, 185, 185))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(18, 18, 18))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel3)
-                                            .addComponent(jLabel1)
-                                            .addComponent(jLabel2))
-                                        .addGap(10, 10, 10))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addGap(39, 39, 39))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addGap(18, 18, 18)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(3, 3, 3)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(txtStudEmail)
-                                            .addComponent(txtSurname)
-                                            .addComponent(txtName)
-                                            .addComponent(txtStudPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(txtCleintNo, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(48, 48, 48)))))
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel2))
+                                .addGap(21, 21, 21))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(3, 3, 3)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtStudEmail)
+                                    .addComponent(txtSurname)
+                                    .addComponent(txtName)
+                                    .addComponent(txtStudPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtCleintNo, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(48, 48, 48)))
                 .addComponent(btnSearch)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,7 +157,7 @@ public class StudentManagement extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtStudPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd)
                     .addComponent(btnDelete)
@@ -166,18 +171,124 @@ public class StudentManagement extends javax.swing.JInternalFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
+        try{
+            Socket socket = new Socket("localhost",8001);
+            int clientNo = Integer.parseInt(txtCleintNo.getText());
+            String name = txtName.getText();
+            String surname  = txtSurname.getText();
+            String email = txtStudEmail.getText();
+            char[] passChar = txtStudPassword.getPassword();
+            String password = "";
+            for(char p: passChar){
+                password += p;
+            }
+            clientObj.setClientNo(clientNo);
+            clientObj.setName(name);
+            clientObj.setSurnName(surname);
+            clientObj.setEmail(email);
+            clientObj.setPassword(password);
+            
+            transmission.setDecision("add");
+            transmission.setObject(clientObj);
+            
+            ObjectOutputStream writeToServer = new ObjectOutputStream(socket.getOutputStream());
+            writeToServer.writeObject(transmission);
+            
+            ObjectInputStream readFromServer = new ObjectInputStream(socket.getInputStream());            
+            transmission = (Transmission) readFromServer.readObject();
+            
+            JOptionPane.showMessageDialog(null, transmission.getDecision());
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
+        try{
+            Socket socket = new Socket("localhost",8001);
+            int clientNo = Integer.parseInt(txtCleintNo.getText());
+            
+            clientObj.setClientNo(clientNo);
+            
+            transmission.setDecision("delete");
+            transmission.setObject(clientObj);
+            
+            ObjectOutputStream writeToServer = new ObjectOutputStream(socket.getOutputStream());
+            writeToServer.writeObject(transmission);
+            
+            ObjectInputStream readFromServer = new ObjectInputStream(socket.getInputStream());            
+            transmission = (Transmission) readFromServer.readObject();
+            
+            JOptionPane.showMessageDialog(null, transmission.getDecision());
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
+        try{
+            Socket socket = new Socket("localhost",8001);
+            int clientNo = Integer.parseInt(txtCleintNo.getText());
+            String name = txtName.getText();
+            String surname  = txtSurname.getText();
+            String email = txtStudEmail.getText();
+            char[] passChar = txtStudPassword.getPassword();
+            String password = "";
+            for(char p: passChar){
+                password += p;
+            }
+            clientObj.setClientNo(clientNo);
+            clientObj.setName(name);
+            clientObj.setSurnName(surname);
+            clientObj.setEmail(email);
+            clientObj.setPassword(password);
+            
+            transmission.setDecision("update");
+            transmission.setObject(clientObj);
+            
+            ObjectOutputStream writeToServer = new ObjectOutputStream(socket.getOutputStream());
+            writeToServer.writeObject(transmission);
+            
+            ObjectInputStream readFromServer = new ObjectInputStream(socket.getInputStream());            
+            transmission = (Transmission) readFromServer.readObject();
+            
+            JOptionPane.showMessageDialog(null, transmission.getDecision());
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
+         try{
+            Socket socket = new Socket("localhost",8001);
+            int clientNo = Integer.parseInt(txtCleintNo.getText());
+            
+            clientObj.setClientNo(clientNo);
+                        
+            transmission.setDecision("search");
+            transmission.setObject(clientObj);
+            
+            ObjectOutputStream writeToServer = new ObjectOutputStream(socket.getOutputStream());
+            writeToServer.writeObject(transmission);
+            
+            ObjectInputStream readFromServer = new ObjectInputStream(socket.getInputStream());            
+            transmission = (Transmission) readFromServer.readObject();
+            if(transmission.getDecision().equals("success")){
+               clientObj = (ClientObj)transmission.getObject();
+               txtName.setText(clientObj.getName());
+               txtSurname.setText(clientObj.getSurnName());
+               txtStudEmail.setText(clientObj.getEmail());               
+            }else{
+                JOptionPane.showMessageDialog(null, transmission.getDecision());
+            }
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
     }//GEN-LAST:event_btnSearchActionPerformed
 
 

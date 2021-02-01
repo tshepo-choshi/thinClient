@@ -71,7 +71,7 @@ public class LoginFrame extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
                     .addComponent(txtEmail))
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -94,8 +94,7 @@ public class LoginFrame extends javax.swing.JInternalFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
-        
-                
+                        
         try{
             Socket socket = new Socket("localhost",8001);
             String email = txtEmail.getText();
@@ -117,13 +116,16 @@ public class LoginFrame extends javax.swing.JInternalFrame {
             ObjectInputStream readFromServer = new ObjectInputStream(socket.getInputStream());            
             transmission = (Transmission) readFromServer.readObject();
             
-            JOptionPane.showMessageDialog(null, transmission.getDecision());
+            if(transmission.getDecision().equals("success")){
+                Client.jMenuTeacherPortal.setEnabled(true);
+                JOptionPane.showMessageDialog(null, "You are logged in...!");
+            }else{
+                JOptionPane.showMessageDialog(null, transmission.getDecision());
+            }
             
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
-        
-        //Client.jMenuTeacherPortal.setEnabled(true);
     }//GEN-LAST:event_btnLoginActionPerformed
 
 
