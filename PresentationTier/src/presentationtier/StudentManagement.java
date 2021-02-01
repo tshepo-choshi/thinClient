@@ -210,10 +210,8 @@ public class StudentManagement extends javax.swing.JInternalFrame {
             Socket socket = new Socket("localhost",8001);
             int clientNo = Integer.parseInt(txtCleintNo.getText());
             
-            clientObj.setClientNo(clientNo);
-            
             transmission.setDecision("delete");
-            transmission.setObject(clientObj);
+            transmission.setObject(clientNo);
             
             ObjectOutputStream writeToServer = new ObjectOutputStream(socket.getOutputStream());
             writeToServer.writeObject(transmission);

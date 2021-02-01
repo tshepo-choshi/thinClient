@@ -12,27 +12,27 @@ import java.io.Serializable;
  * @author eliasc
  */
 public class ClientObj implements Serializable {
-    private int clientID;
-    private int clientNo;
+    private int clientid;
+    private int clientno;
     private String name;
-    private String surnName;
+    private String surname;
     private String email;
     private String password;
 
-    public int getClientID() {
-        return clientID;
+    public int getClientid() {
+        return clientid;
     }
 
-    public void setClientID(int clientID) {
-        this.clientID = clientID;
+    public void setClientid(int clientid) {
+        this.clientid = clientid;
     }
 
-    public int getClientNo() {
-        return clientNo;
+    public int getClientno() {
+        return clientno;
     }
 
-    public void setClientNo(int clientNo) {
-        this.clientNo = clientNo;
+    public void setClientno(int clientno) {
+        this.clientno = clientno;
     }
 
     public String getName() {
@@ -43,12 +43,12 @@ public class ClientObj implements Serializable {
         this.name = name;
     }
 
-    public String getSurnName() {
-        return surnName;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setSurnName(String surnName) {
-        this.surnName = surnName;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getEmail() {
@@ -66,6 +66,10 @@ public class ClientObj implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    
+    
+   
     
     
     
