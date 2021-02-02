@@ -58,15 +58,14 @@ public class DataTire {
                 }else if(theRequest.equalsIgnoreCase("add")){
                     int test = dao.add(client);
                     if(test > 0){
-                        trans.setDecision("Client successful");
+                        trans.setDecision("Client added successful");
                     }else{
                         trans.setDecision("Error, could not register client");
                     }
                     writeToClient.writeObject(trans);
                 
-                }else if(theRequest.equalsIgnoreCase("delete")){
-                    int clientNo = (Integer) trans.getObject();
-                    int test = dao.delete(clientNo);
+                }else if(theRequest.equalsIgnoreCase("delete")){                    
+                    int test = dao.delete(client.getClientno());
                     if(test > 0){
                         trans.setDecision("Client Deleted");
                     }else{
@@ -84,8 +83,8 @@ public class DataTire {
                     writeToClient.writeObject(trans);
                 
                 }else if(theRequest.equalsIgnoreCase("search")){
-                    int clientNo = (Integer) trans.getObject();
-                    ClientObj clientObj = dao.search(clientNo);
+                    
+                    ClientObj clientObj = dao.search(client.getClientno());
                     if(clientObj != null){
                         trans.setDecision("success");
                         trans.setObject(clientObj);

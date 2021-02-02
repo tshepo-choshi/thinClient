@@ -64,7 +64,6 @@ public class Client extends javax.swing.JFrame {
         jMenuTeacherPortal.setEnabled(false);
 
         jMenuItemStudentManagment.setText("Student Management ");
-        jMenuItemStudentManagment.setActionCommand("Student Management ");
         jMenuItemStudentManagment.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemStudentManagmentActionPerformed(evt);

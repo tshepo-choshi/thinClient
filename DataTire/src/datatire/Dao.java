@@ -22,7 +22,7 @@ public class Dao {
     
     public void openDB() throws ClassNotFoundException, SQLException{
         Class.forName("com.mysql.jdbc.Driver");
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/clientserverdb", "client","12345");
+        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/clientserverdb", "admin","admin");
         statement = connection.createStatement();
     }
     public void closeDB() throws SQLException{
@@ -30,11 +30,11 @@ public class Dao {
         connection.close();
     }
     public int add(ClientObj client) throws SQLException{
-        String sql = "insert into tblstudent(clientno, name, surname, email, password) values('"+client.getClientno()+"','"+client.getName()+"',"+client.getSurname()+",'"+client.getEmail()+"','"+client.getPassword()+"')";        
+        String sql = "insert into tblstudent(clientno, name, surname, email, password) values('"+client.getClientno()+"','"+client.getName()+"','"+client.getSurname()+"','"+client.getEmail()+"','"+client.getPassword()+"')";        
         return statement.executeUpdate(sql);       
     }
     public int update(ClientObj client) throws SQLException{
-        String sql = "update tblstudent set name='"+client.getName()+"', surname='"+client.getSurname()+"',email="+client.getEmail()+", password="+client.getPassword()+" where clientno="+client.getClientno();
+        String sql = "update tblstudent set name='"+client.getName()+"', surname='"+client.getSurname()+"', email='"+client.getEmail()+"', password='"+client.getPassword()+"' where clientno="+client.getClientno();
         return statement.executeUpdate(sql); 
     }
     public int delete(int clientno) throws SQLException{
@@ -55,7 +55,7 @@ public class Dao {
     }
     public ClientObj login(ClientObj client) throws SQLException{
         ClientObj theClient = null;        
-        String sql = "select name,surname,email from tblstudent where email="+client.getEmail()+" && password="+client.getPassword();
+        String sql = "select name, surname, email from tblstudent where email='"+client.getEmail()+"' AND password='"+client.getPassword()+"'";
         ResultSet rs = statement.executeQuery(sql);
         if(rs.next()){ 
             theClient = new ClientObj();

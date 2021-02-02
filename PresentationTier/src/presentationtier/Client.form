@@ -40,7 +40,6 @@
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemStudentManagment">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Student Management "/>
-                <Property name="actionCommand" type="java.lang.String" value="Student Management "/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemStudentManagmentActionPerformed"/>
