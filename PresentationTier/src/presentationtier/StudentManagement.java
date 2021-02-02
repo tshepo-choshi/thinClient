@@ -182,9 +182,9 @@ public class StudentManagement extends javax.swing.JInternalFrame {
             for(char p: passChar){
                 password += p;
             }
-            clientObj.setClientNo(clientNo);
+            clientObj.setClientno(clientNo);
             clientObj.setName(name);
-            clientObj.setSurnName(surname);
+            clientObj.setSurname(surname);
             clientObj.setEmail(email);
             clientObj.setPassword(password);
             
@@ -208,10 +208,10 @@ public class StudentManagement extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         try{
             Socket socket = new Socket("localhost",8001);
-            int clientNo = Integer.parseInt(txtCleintNo.getText());
+            int clientno = Integer.parseInt(txtCleintNo.getText());
             
             transmission.setDecision("delete");
-            transmission.setObject(clientNo);
+            transmission.setObject(clientno);
             
             ObjectOutputStream writeToServer = new ObjectOutputStream(socket.getOutputStream());
             writeToServer.writeObject(transmission);
@@ -238,9 +238,9 @@ public class StudentManagement extends javax.swing.JInternalFrame {
             for(char p: passChar){
                 password += p;
             }
-            clientObj.setClientNo(clientNo);
+            clientObj.setClientno(clientNo);
             clientObj.setName(name);
-            clientObj.setSurnName(surname);
+            clientObj.setSurname(surname);
             clientObj.setEmail(email);
             clientObj.setPassword(password);
             
@@ -265,7 +265,7 @@ public class StudentManagement extends javax.swing.JInternalFrame {
             Socket socket = new Socket("localhost",8001);
             int clientNo = Integer.parseInt(txtCleintNo.getText());
             
-            clientObj.setClientNo(clientNo);
+            clientObj.setClientno(clientNo);
                         
             transmission.setDecision("search");
             transmission.setObject(clientObj);
@@ -278,7 +278,7 @@ public class StudentManagement extends javax.swing.JInternalFrame {
             if(transmission.getDecision().equals("success")){
                clientObj = (ClientObj)transmission.getObject();
                txtName.setText(clientObj.getName());
-               txtSurname.setText(clientObj.getSurnName());
+               txtSurname.setText(clientObj.getSurname());
                txtStudEmail.setText(clientObj.getEmail());               
             }else{
                 JOptionPane.showMessageDialog(null, transmission.getDecision());
